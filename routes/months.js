@@ -6,7 +6,7 @@ const router = express.Router();
 const { getSheetData } = require("../utils/dataLoader");
 const { sumMonthlyEmissions } = require("../utils/sumMonthlyEmissions");
 const { createEmissionsChart } = require("../utils/createEmissionsChart");
-
+const { plotSupplyShock } = require("../utils/supplyShock");
 
 // Endpoint 1: Data for Plot Values and Supply Shocks
 router.post("/plot-values", async (req, res) => {
@@ -26,26 +26,21 @@ router.post("/plot-values", async (req, res) => {
       sellingPressureSource,
       sellingPressure
     );
-    console.log("processedEmissions:", processedEmissions);
+    // console.log("processedEmissions:", processedEmissions);
     // // Step 3: Plot supply shock and extract supply shock values
-    const {
-      plotData,
+    const [
       selectedSupplyShock,
       previousSupplyShock,
       futureSupplyShock,
-    } = plotSupplyShock(processedEmissions, selectedMonth);
+     ] = plotSupplyShock(processedEmissions, selectedMonth);
 
-    // // Step 4: Return the plot data and supply shock values
-    // res.status(200).json({
-    //   plotData,
-    //   supplyShocks: {
-    //     selected: selectedSupplyShock,
-    //     previous: previousSupplyShock,
-    //     future: futureSupplyShock,
-    //   },
-    // });
     res.status(200).json({
-        plotData: processedEmissions
+        plotData:processedEmissions,
+        supplyShocks: {
+          selected: selectedSupplyShock,
+          previous: previousSupplyShock,
+          future: futureSupplyShock,
+        },
     });
   } catch (error) {
     console.error("Error in /plot-values:", error);
