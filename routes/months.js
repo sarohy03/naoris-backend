@@ -106,25 +106,26 @@ router.post("/", async (req, res) => {
     // console.log(selectedValues)
     // Step 5: Return the calculated data
     res.status(200).json({
-        selectedMonth: {
-          unlock_value_sp: selectedValues.emissionsValue,
-          Value_for_Investors_Max: selected100SP.investorValue,
-          Value_for_Investors_SP: selectedValues.investorValue,
-          unlock_value_max: selected100SP.emissionsValue,
-        },
-        previousMonth: {
-          unlock_value_sp: previousValues.emissionsValue,
-          Value_for_Investors_Max: previous100SP.investorValue,
-          Value_for_Investors_SP: previousValues.investorValue,
-          unlock_value_max: previous100SP.emissionsValue,
-        },
-        futureMonth: {
-          unlock_value_sp: futureValues.emissionsValue,
-          Value_for_Investors_Max: future100SP.investorValue,
-          Value_for_Investors_SP: futureValues.investorValue,
-          unlock_value_max: future100SP.emissionsValue,
-        },
-      });
+      selectedMonth: {
+        unlock_value_sp: Math.round(selectedValues.emissionsValue),
+        Value_for_Investors_Max: Math.round(selected100SP.investorValue),
+        Value_for_Investors_SP: Math.round(selectedValues.investorValue),
+        unlock_value_max: Math.round(selected100SP.emissionsValue),
+      },
+      previousMonth: {
+        unlock_value_sp: Math.round(previousValues.emissionsValue),
+        Value_for_Investors_Max: Math.round(previous100SP.investorValue),
+        Value_for_Investors_SP: Math.round(previousValues.investorValue),
+        unlock_value_max: Math.round(previous100SP.emissionsValue),
+      },
+      futureMonth: {
+        unlock_value_sp: Math.round(futureValues.emissionsValue),
+        Value_for_Investors_Max: Math.round(future100SP.investorValue),
+        Value_for_Investors_SP: Math.round(futureValues.investorValue),
+        unlock_value_max: Math.round(future100SP.emissionsValue),
+      },
+    });
+    
   } catch (error) {
     console.error("Error in /three-months-data:", error);
     res.status(500).json({ error: error.message });
